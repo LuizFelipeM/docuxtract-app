@@ -1,6 +1,8 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Field } from "../types/Field";
 import { FieldType, FieldTypeMap } from "../types/FieldType";
 import { FieldProperties } from "./FieldProperties";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 interface FieldInputProps {
   field: Field;
@@ -11,33 +13,40 @@ interface FieldInputProps {
 export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, onRemove }) => {
   return (
     <>
-      <div className="grid grid-cols-5 gap-4 items-center">
-        <input
-          type="text"
-          placeholder="Field Name"
-          value={field.name}
-          onChange={(e) => onChange({ ...field, name: e.target.value })}
-          className="border p-2 rounded"
-        />
-        <select
-          value={field.type}
-          onChange={(e) => {
-            const type = e.target.value as FieldType
+      <div className="mb-3 last:mb-0 grid grid-cols-5 gap-4 items-center">
+        <div className="flex flex-col">
+          <span className="mb-2 text-sm font-medium text-gray-900">Nome</span>
+          <input
+            type="text"
+            placeholder="Nome"
+            value={field.name}
+            onChange={(e) => onChange({ ...field, name: e.target.value })}
+            className="border p-2 rounded"
+          />
+        </div>
 
-            onChange({
-              ...field,
-              type,
-              items: type === 'array' ? {} as Field : undefined
-            })
-          }}
-          className="border p-2 rounded"
-        >
-          {Object.values(FieldType).map((key) => (
-            <option key={key} value={key}>
-              {FieldTypeMap.get(key)}
-            </option>
-          ))}
-        </select>
+        <div className="flex flex-col">
+          <span className="mb-2 text-sm font-medium text-gray-900">Tipo</span>
+          <select
+            value={field.type}
+            onChange={(e) => {
+              const type = e.target.value as FieldType
+
+              onChange({
+                ...field,
+                type,
+                items: type === 'array' ? {} as Field : undefined
+              })
+            }}
+            className="border p-2 rounded"
+          >
+            {Object.values(FieldType).map((key) => (
+              <option key={key} value={key}>
+                {FieldTypeMap.get(key)}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <div className="flex flex-col">
           <span className="mb-2 text-sm font-medium text-gray-900">Obrigatório?</span>
@@ -52,16 +61,20 @@ export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, onRemov
           </label>
         </div>
 
-        <input
-          type="text"
-          placeholder="Description"
-          value={field.description}
-          onChange={(e) => onChange({ ...field, description: e.target.value })}
-          className="border p-2 rounded"
-        />
+        <div className="flex flex-col">
+          <span className="mb-2 text-sm font-medium text-gray-900">Descrição</span>
+          <input
+            type="text"
+            placeholder="Descrição"
+            value={field.description}
+            onChange={(e) => onChange({ ...field, description: e.target.value })}
+            className="border p-2 rounded"
+          />
+        </div>
+
         {onRemove && (
           <button className="text-red-500" onClick={onRemove}>
-            Remover
+            <FontAwesomeIcon icon={faTrash} /> Remover
           </button>
         )}
       </div>
