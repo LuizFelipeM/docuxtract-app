@@ -2,6 +2,8 @@ import React from "react";
 import { Field } from "../types/Field";
 import { FieldInput } from "./FieldInput";
 import { FieldType } from "../types/FieldType";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 interface FieldPropertiesProps {
   field: Field;
@@ -13,7 +15,7 @@ export const FieldProperties: React.FC<FieldPropertiesProps> = ({ field, onChang
     return (
       <div className="ml-4">
         <h4 className="font-bold mb-2">Propriedades:</h4>
-        {field.properties?.map((prop, index) => (
+        {field.properties?.map((prop, index, array) => (
           <FieldInput
             key={index}
             field={prop}
@@ -23,6 +25,7 @@ export const FieldProperties: React.FC<FieldPropertiesProps> = ({ field, onChang
               const updatedField = { ...field, properties: updatedProperties };
               onChange(updatedField);
             }}
+            disableRemoveButton={array.length === 1}
             onRemove={() => {
               const updatedProperties = (field.properties || []).filter((_, i) => i !== index);
               const updatedField = { ...field, properties: updatedProperties };
@@ -48,6 +51,7 @@ export const FieldProperties: React.FC<FieldPropertiesProps> = ({ field, onChang
           }}
           className="mt-2 bg-green-500 text-white px-4 py-2 rounded"
         >
+          <FontAwesomeIcon icon={faPlus} className='mr-2' />
           Adicionar Propriedade
         </button>
       </div>
