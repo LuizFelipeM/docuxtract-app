@@ -3,6 +3,7 @@ import { Field } from "../types/Field";
 import { FieldType, FieldTypeMap } from "../types/FieldType";
 import { FieldProperties } from "./FieldProperties";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { createEmptyField } from "../utils/createEmptyField";
 
 interface FieldInputProps {
   field: Field;
@@ -44,12 +45,11 @@ export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disable
               value={field.type}
               onChange={(e) => {
                 const type = e.target.value as FieldType
-
                 onChange({
                   ...field,
                   type,
-                  properties: type === FieldType.object ? [{} as Field] : undefined,
-                  items: type === FieldType.array ? {} as Field : undefined
+                  properties: type === FieldType.object ? [createEmptyField()] : undefined,
+                  items: type === FieldType.array ? createEmptyField() : undefined
                 })
               }}
               className="border p-1 rounded"

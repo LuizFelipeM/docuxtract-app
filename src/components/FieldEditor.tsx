@@ -4,13 +4,14 @@ import { FieldInput } from './FieldInput';
 import { FieldType } from '../types/FieldType';
 import { faFloppyDisk, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { createEmptyField } from '../utils/createEmptyField';
 
 
 export const FieldEditor = () => {
   const [name, setName] = useState<string>()
   const [fields, setFields] = useState<Field[]>([]);
 
-  const handleFieldChange = (index: number, updatedField: Field) => {
+  const handleFieldChange = (index: number) => (updatedField: Field) => {
     setFields(f => {
       const updatedFields = [...f];
       updatedFields[index] = updatedField;
@@ -19,12 +20,25 @@ export const FieldEditor = () => {
   };
 
   const addField = () => {
-    setFields(f => [...f, { name: '', type: FieldType.string, required: false, description: '' }]);
+    setFields(f => [...f, createEmptyField()]);
   };
 
   const removeField = (index: number) => {
     setFields(f => f.filter((_, i) => i !== index));
   };
+
+  const checkFieldIsValid = (field: Field): boolean =>
+    !!field.name &&
+    !!field.type &&
+    (![FieldType.object, FieldType.array].includes(field.type) || (
+      (field.type === FieldType.object && !!field.properties && field.properties.reduce((prev, curr) => prev && checkFieldIsValid(curr), true)) ||
+      (field.type === FieldType.array && !!field.items && checkFieldIsValid(field.items))
+    ))
+
+  const saveSchema = () => {
+    const isSchemaValid = fields.reduce((prev, curr) => prev && checkFieldIsValid(curr), true)
+    console.log(isSchemaValid)
+  }
 
   return (
     <div className="flex flex-col max-w-[850px] mx-auto p-4">
@@ -53,7 +67,7 @@ export const FieldEditor = () => {
           <div key={index} className="p-4 border rounded-md">
             <FieldInput
               field={field}
-              onChange={(updatedField) => handleFieldChange(index, updatedField)}
+              onChange={handleFieldChange(index)}
               onRemove={() => removeField(index)}
             />
           </div>
@@ -64,7 +78,7 @@ export const FieldEditor = () => {
           <FontAwesomeIcon icon={faPlus} className='mr-2' />
           Adicionar Campo
         </button>
-        <button className="mt-4 bg-green-500 text-white px-4 py-2 rounded" onClick={addField}>
+        <button className="mt-4 bg-green-500 text-white px-4 py-2 rounded" onClick={saveSchema}>
           <FontAwesomeIcon icon={faFloppyDisk} className='mr-2' />
           Salvar Modelo
         </button>
