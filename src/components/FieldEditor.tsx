@@ -28,7 +28,7 @@ export const FieldEditor = () => {
 
   return (
     <div className="flex flex-col max-w-[850px] mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">
+      <h1 className="text-3xl font-bold mb-4">
         Nome do modelo:
         <input
           type="text"
@@ -40,7 +40,7 @@ export const FieldEditor = () => {
         />
       </h1>
 
-      <h2 className="text-3xl font-bold mb-4">Campos a serem extraídos</h2>
+      <h2 className="text-2xl font-bold mb-4">Campos a serem extraídos</h2>
 
       {fields.length === 0 && (
         <p>

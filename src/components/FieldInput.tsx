@@ -13,7 +13,7 @@ interface FieldInputProps {
 
 export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disableRemoveButton, onRemove }) => {
   return (
-    <div className="divide-y divide-solid">
+    <>
       <div className="mb-3">
         <div className="flex flex-row">
           <h4 className="font-bold mb-2 flex-1">
@@ -90,6 +90,6 @@ export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disable
       </div>
 
       <FieldProperties field={field} onChange={onChange} />
-    </div>
+    </>
   );
 };
