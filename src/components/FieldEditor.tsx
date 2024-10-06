@@ -30,6 +30,7 @@ export const FieldEditor = () => {
   const checkFieldIsValid = (field: Field): boolean =>
     !!field.name &&
     !!field.type &&
+    !!field.description &&
     (![FieldType.object, FieldType.array].includes(field.type) || (
       (field.type === FieldType.object && !!field.properties && field.properties.reduce((prev, curr) => prev && checkFieldIsValid(curr), true)) ||
       (field.type === FieldType.array && !!field.items && checkFieldIsValid(field.items))
