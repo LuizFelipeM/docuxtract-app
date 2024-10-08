@@ -21,7 +21,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
       <div
         className={
-          `fixed inset-y-0 left-0 w-64 bg-gray-800 text-white z-30 transform
+          `fixed inset-y-0 left-0 w-64 bg-slate-950 text-white z-30 transform
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
            transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:h-full`
         }
@@ -31,19 +31,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         </div>
         <ul className="mt-6 space-y-2">
           <li>
-            <Link to="/new-schema" className="block px-4 py-2 hover:bg-gray-700" onClick={toggleSidebar}>
+            <Link to="/new-schema" className="block px-4 py-2 transition-all hover:bg-gray-800" onClick={toggleSidebar}>
               <FontAwesomeIcon icon={faPlus} className="mr-2" />
               Criar novo modelo
             </Link>
           </li>
           <li>
-            <Link to="/my-schemas" className="block px-4 py-2 hover:bg-gray-700" onClick={toggleSidebar}>
+            <Link to="/my-schemas" className="block px-4 py-2 transition-all hover:bg-gray-800" onClick={toggleSidebar}>
               <FontAwesomeIcon icon={faList} className="mr-2" />
               Meus modelos
             </Link>
           </li>
           <li>
-            <Link to="/data-extraction" className="block px-4 py-2 hover:bg-gray-700" onClick={toggleSidebar}>
+            <Link to="/data-extraction" className="block px-4 py-2 transition-all hover:bg-gray-800" onClick={toggleSidebar}>
               <FontAwesomeIcon icon={faFile} className="mr-2" />
               Extrair dados
             </Link>
