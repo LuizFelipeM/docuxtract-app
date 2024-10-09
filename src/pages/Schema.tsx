@@ -6,6 +6,7 @@ import { FieldType } from '../types/FieldType'
 import { Toast } from '../components/Toast'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
+import { PageLayout } from '../components/PageLayout'
 
 interface SchemaDto {
   name: string
@@ -43,7 +44,7 @@ export const Schema: React.FC = () => {
   }
 
   return (
-    <>
+    <PageLayout>
       {!!toastInfo && (
         <Toast
           title={toastInfo.title}
@@ -65,6 +66,6 @@ export const Schema: React.FC = () => {
           })
         }
       />
-    </>
+    </PageLayout>
   )
 }
