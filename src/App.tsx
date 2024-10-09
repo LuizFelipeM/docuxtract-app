@@ -4,6 +4,7 @@ import { DataExtraction } from './pages/DataExtraction'
 import { Schema } from './pages/Schema'
 import { NotFound } from './pages/NotFound'
 import { AuthenticationGuard } from './AuthenticationGuard'
+import { Callback } from './pages/Callback'
 
 export function App() {
   return (
@@ -13,6 +14,7 @@ export function App() {
         <Route path="/new-schema" element={<AuthenticationGuard component={Schema} />} />
         <Route path="/my-schemas" element={<AuthenticationGuard component={SchemasList} />} />
         <Route path="/data-extraction" element={<AuthenticationGuard component={DataExtraction} />} />
+        <Route path="/callback" element={<Callback />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 

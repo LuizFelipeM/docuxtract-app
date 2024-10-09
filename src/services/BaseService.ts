@@ -8,7 +8,7 @@ const api = axios.create({
 export abstract class BaseService {
   constructor(protected readonly getToken: () => Promise<string>) { }
 
-  async get<T>(path: string, config?: AxiosRequestConfig): Promise<T> {
+  protected async get<T>(path: string, config?: AxiosRequestConfig): Promise<T> {
     return (
       await api.get<T>(path, {
         ...config,
@@ -19,7 +19,7 @@ export abstract class BaseService {
     ).data
   }
 
-  async post<T, K>(path: string, data: T, config?: AxiosRequestConfig): Promise<K> {
+  protected async post<T, K>(path: string, data: T, config?: AxiosRequestConfig): Promise<K> {
     return (
       await api.post<K>(path, data, {
         ...config,
@@ -30,7 +30,7 @@ export abstract class BaseService {
     ).data
   }
 
-  async put<T>(path: string, data: T, config?: AxiosRequestConfig): Promise<void> {
+  protected async put<T>(path: string, data: T, config?: AxiosRequestConfig): Promise<void> {
     await api.post<T>(path, data, {
       ...config,
       headers: {
@@ -39,7 +39,7 @@ export abstract class BaseService {
     })
   }
 
-  async patch<T>(path: string, data: T, config?: AxiosRequestConfig): Promise<void> {
+  protected async patch<T>(path: string, data: T, config?: AxiosRequestConfig): Promise<void> {
     await api.patch(path, data, {
       ...config,
       headers: {
@@ -48,7 +48,7 @@ export abstract class BaseService {
     })
   }
 
-  async delete(path: string, config?: AxiosRequestConfig): Promise<void> {
+  protected async delete(path: string, config?: AxiosRequestConfig): Promise<void> {
     await api.delete(path, {
       ...config,
       headers: {
