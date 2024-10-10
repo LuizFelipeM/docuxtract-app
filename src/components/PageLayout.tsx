@@ -13,7 +13,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
   return (
     <>
       <button
-        className="fixed lg:hidden mb-4 bg-blue-500 text-white px-4 py-2 rounded"
+        className="fixed lg:hidden mb-4 bg-blue-600 text-white px-4 py-2 rounded"
         onClick={() => setIsSidebarOpen(true)}
       >
         <FontAwesomeIcon icon={faBars} />
