@@ -114,11 +114,11 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({ onSave }) => {
           ))}
         </div>
         <div className='flex justify-between'>
-          <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded" onClick={addField}>
+          <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded" onClick={addField}>
             <FontAwesomeIcon icon={faPlus} className='mr-2' />
             Adicionar Campo
           </button>
-          <button className="mt-4 bg-green-500 text-white px-4 py-2 rounded" onClick={saveSchema}>
+          <button className="mt-4 bg-green-600 text-white px-4 py-2 rounded" onClick={saveSchema}>
             <FontAwesomeIcon icon={faFloppyDisk} className='mr-2' />
             Salvar Modelo
           </button>

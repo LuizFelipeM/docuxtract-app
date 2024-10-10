@@ -1,23 +1,20 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useContext, useState } from 'react'
 import { FieldEditor } from '../components/FieldEditor'
-import { Field } from '../types/Field'
-import { api } from '../utils/api'
 import { FieldType } from '../types/FieldType'
 import { Toast } from '../components/Toast'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
-
-interface SchemaDto {
-  name: string
-  json_schema: Field
-}
+import { PageLayout } from '../components/PageLayout'
+import { SchemaDto } from '../types/SchemaDto'
+import { ServicesContext } from '../contexts/ServiceContext'
 
 export const Schema: React.FC = () => {
+  const { schemasService } = useContext(ServicesContext)
   const [toastInfo, setToastInfo] = useState<{ title: ReactNode, message: string }>();
 
   const saveSchema = async (schema: SchemaDto) => {
     try {
-      api.put("/schemas", schema)
+      await schemasService.saveSchema(schema)
       setToastInfo({
         title: (
           <>
@@ -43,7 +40,7 @@ export const Schema: React.FC = () => {
   }
 
   return (
-    <>
+    <PageLayout>
       {!!toastInfo && (
         <Toast
           title={toastInfo.title}
@@ -65,6 +62,6 @@ export const Schema: React.FC = () => {
           })
         }
       />
-    </>
+    </PageLayout>
   )
 }

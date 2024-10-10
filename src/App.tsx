@@ -1,35 +1,25 @@
-import { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { Sidebar } from './components/Sidebar'
+import { Routes, Route } from 'react-router-dom'
 import { SchemasList } from './pages/SchemaList'
 import { DataExtraction } from './pages/DataExtraction'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { Schema } from './pages/Schema'
+import { NotFound } from './pages/NotFound'
+import { AuthenticationGuard } from './AuthenticationGuard'
+import { Callback } from './pages/Callback'
+import { Home } from './pages/Home'
 
 export function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   return (
-    <Router>
-      <div className="flex min-h-screen">
-        <button
-          className="fixed lg:hidden mb-4 bg-blue-500 text-white px-4 py-2 rounded"
-          onClick={() => setIsSidebarOpen(true)}
-        >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
+    <div className="flex min-h-screen bg-gray-100 text-gray-800">
 
-        <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/new-schema" element={<AuthenticationGuard component={Schema} />} />
+        <Route path="/my-schemas" element={<AuthenticationGuard component={SchemasList} />} />
+        <Route path="/data-extraction" element={<AuthenticationGuard component={DataExtraction} />} />
+        <Route path="/callback" element={<Callback />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
 
-        <div className="flex-1 p-6">
-          <Routes>
-            <Route path="/new-schema" element={<Schema />} />
-            <Route path="/my-schemas" element={<SchemasList />} />
-            <Route path="/data-extraction" element={<DataExtraction />} />
-          </Routes>
-        </div>
-      </div>
-    </Router>
+    </div>
   )
 }
