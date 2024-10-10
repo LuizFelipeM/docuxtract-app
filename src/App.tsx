@@ -9,7 +9,7 @@ import { Home } from './pages/Home'
 
 export function App() {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-gray-100 text-gray-800">
 
       <Routes>
         <Route path="/" element={<Home />} />
