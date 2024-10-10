@@ -31,7 +31,7 @@ export abstract class BaseService {
   }
 
   protected async put<T>(path: string, data: T, config?: AxiosRequestConfig): Promise<void> {
-    await api.post<T>(path, data, {
+    await api.put<T>(path, data, {
       ...config,
       headers: {
         Authorization: `Bearer ${await this.getToken()}`,
