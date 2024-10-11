@@ -2,18 +2,18 @@ import axios, { AxiosRequestConfig } from "axios";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 1000
+  timeout: 3000
 })
 
 export abstract class BaseService {
-  constructor(protected readonly getToken: () => Promise<string>) { }
+  constructor(protected readonly getAccessTokenSilently: () => Promise<string>) { }
 
   protected async get<T>(path: string, config?: AxiosRequestConfig): Promise<T> {
     return (
       await api.get<T>(path, {
         ...config,
         headers: {
-          Authorization: `Bearer ${await this.getToken()}`,
+          Authorization: `Bearer ${await this.getAccessTokenSilently()}`,
         },
       })
     ).data
@@ -24,7 +24,7 @@ export abstract class BaseService {
       await api.post<K>(path, data, {
         ...config,
         headers: {
-          Authorization: `Bearer ${await this.getToken()}`,
+          Authorization: `Bearer ${await this.getAccessTokenSilently()}`,
         },
       })
     ).data
@@ -34,7 +34,7 @@ export abstract class BaseService {
     await api.put<T>(path, data, {
       ...config,
       headers: {
-        Authorization: `Bearer ${await this.getToken()}`,
+        Authorization: `Bearer ${await this.getAccessTokenSilently()}`,
       },
     })
   }
@@ -43,7 +43,7 @@ export abstract class BaseService {
     await api.patch(path, data, {
       ...config,
       headers: {
-        Authorization: `Bearer ${await this.getToken()}`,
+        Authorization: `Bearer ${await this.getAccessTokenSilently()}`,
       },
     })
   }
@@ -52,7 +52,7 @@ export abstract class BaseService {
     await api.delete(path, {
       ...config,
       headers: {
-        Authorization: `Bearer ${await this.getToken()}`,
+        Authorization: `Bearer ${await this.getAccessTokenSilently()}`,
       },
     })
   }

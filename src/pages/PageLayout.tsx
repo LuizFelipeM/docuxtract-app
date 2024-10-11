@@ -6,7 +6,6 @@ import { Outlet } from 'react-router-dom'
 
 export const PageLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   return (
     <>
       <button

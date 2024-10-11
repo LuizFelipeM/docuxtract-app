@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export const Callback: React.FC = () => {
-  const { error, isAuthenticated } = useAuth0();
-
-  useEffect(() => console.log('isAuthenticated', isAuthenticated), [isAuthenticated])
+  const { error } = useAuth0();
 
   if (error) {
     return (

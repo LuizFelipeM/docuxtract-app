@@ -2,8 +2,8 @@ import { SchemaDto } from "../types/SchemaDto";
 import { BaseService } from "./BaseService";
 
 export class SchemasService extends BaseService {
-  constructor(getToken: () => Promise<string>) {
-    super(getToken);
+  constructor(getAccessTokenSilently: () => Promise<string>) {
+    super(getAccessTokenSilently);
   }
 
   async saveSchema(schema: SchemaDto): Promise<void> {

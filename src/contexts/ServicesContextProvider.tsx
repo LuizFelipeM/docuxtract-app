@@ -4,7 +4,7 @@ import { SchemasService } from '../services/SchemasService';
 import { ServicesContext } from './ServiceContext';
 
 export const ServicesContextProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0()
 
   return (
     <ServicesContext.Provider

@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Field } from '../types/Field';
 import { FieldInput } from './FieldInput';
 import { FieldType } from '../types/FieldType';
-import { faFloppyDisk, faPlus, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faFloppyDisk, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { createEmptyField } from '../utils/createEmptyField';
-import { Toast } from './Toast';
+import toast from 'react-hot-toast';
 
 interface FieldEditorProps {
   fields?: Field[]
@@ -15,9 +15,6 @@ interface FieldEditorProps {
 export const FieldEditor: React.FC<FieldEditorProps> = ({ fields: initialFields, onSave }) => {
   const [name, setName] = useState<string>("")
   const [fields, setFields] = useState<Field[]>(initialFields ?? []);
-  const [toastMessage, setToastMessage] = useState<string>();
-
-  const openToast = (message: string) => setToastMessage(message)
 
   const handleFieldChange = (index: number) => (updatedField: Field) => {
     setFields(f => {
@@ -46,18 +43,18 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({ fields: initialFields,
 
   const saveSchema = async () => {
     if (!name) {
-      openToast("O nome do modelo é obrigatório!")
+      toast.error("O nome do modelo é obrigatório!")
       return
     }
 
     if (fields.length === 0) {
-      openToast("Modelo inválido, o modelo deve ter ao menos 1 campo adicionado.")
+      toast.error("Modelo inválido, o modelo deve ter ao menos 1 campo adicionado.")
       return
     }
 
     const isSchemaValid = fields.reduce((prev, curr) => prev && checkFieldIsValid(curr), true)
     if (!isSchemaValid) {
-      openToast("Modelo inválido, por favor, verifique os campos obrigatórios antes de tentar salvar novamente.")
+      toast.error("Modelo inválido, por favor, verifique os campos obrigatórios antes de tentar salvar novamente.")
       return
     }
 
@@ -69,19 +66,6 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({ fields: initialFields,
 
   return (
     <>
-      {!!toastMessage && (
-        <Toast
-          title={
-            <>
-              <FontAwesomeIcon icon={faTriangleExclamation} className='mr-2 text-red-500' />
-              Erro ao salvar modelo!
-            </>
-          }
-          message={toastMessage}
-          onClose={() => setToastMessage(undefined)}
-        />
-      )}
-
       <div className="flex flex-col max-w-[850px] mx-auto p-4">
         <h1 className="text-3xl font-bold mb-4">
           Nome do modelo:
