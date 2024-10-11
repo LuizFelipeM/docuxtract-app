@@ -8,12 +8,13 @@ import { createEmptyField } from '../utils/createEmptyField';
 import { Toast } from './Toast';
 
 interface FieldEditorProps {
+  fields?: Field[]
   onSave?: (name: string, schema: Field[]) => boolean | Promise<boolean>
 }
 
-export const FieldEditor: React.FC<FieldEditorProps> = ({ onSave }) => {
+export const FieldEditor: React.FC<FieldEditorProps> = ({ fields: initialFields, onSave }) => {
   const [name, setName] = useState<string>("")
-  const [fields, setFields] = useState<Field[]>([]);
+  const [fields, setFields] = useState<Field[]>(initialFields ?? []);
   const [toastMessage, setToastMessage] = useState<string>();
 
   const openToast = (message: string) => setToastMessage(message)

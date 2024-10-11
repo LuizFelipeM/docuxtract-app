@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
-import { Sidebar } from './Sidebar'
+import { Sidebar } from '../components/Sidebar'
+import { Outlet } from 'react-router-dom'
 
-interface PageLayoutProps {
-  children?: React.ReactNode
-}
-
-export const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
+export const PageLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
@@ -22,7 +19,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
       <div className="flex-1 p-6">
-        {children}
+        <Outlet />
       </div>
     </>
   )

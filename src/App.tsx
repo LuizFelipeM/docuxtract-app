@@ -5,19 +5,27 @@ import { Schema } from './pages/Schema'
 import { NotFound } from './pages/NotFound'
 import { AuthenticationGuard } from './AuthenticationGuard'
 import { Callback } from './pages/Callback'
-import { Home } from './pages/Home'
+import { PageLayout } from './pages/PageLayout'
 
 export function App() {
   return (
     <div className="flex min-h-screen bg-gray-100 text-gray-800">
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/new-schema" element={<AuthenticationGuard component={Schema} />} />
-        <Route path="/my-schemas" element={<AuthenticationGuard component={SchemasList} />} />
-        <Route path="/data-extraction" element={<AuthenticationGuard component={DataExtraction} />} />
-        <Route path="/callback" element={<Callback />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/callback" element={<Callback />} />
+
+        <Route path="/" element={<AuthenticationGuard component={PageLayout} />}>
+
+          <Route path="schema">
+            <Route path="new" element={<Schema />} />
+            <Route path=":id" element={<Schema />} />
+            <Route path="list" element={<SchemasList />} />
+          </Route>
+
+          <Route path="extraction" element={<DataExtraction />} />
+
+        </Route>
       </Routes>
 
     </div>

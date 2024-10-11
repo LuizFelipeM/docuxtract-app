@@ -1,5 +1,4 @@
 import React, { ReactNode, useContext, useEffect, useState } from "react";
-import { PageLayout } from "../components/PageLayout";
 import { SchemaDto } from "../types/SchemaDto";
 import { ServicesContext } from "../contexts/ServiceContext";
 import { Toast } from "../components/Toast";
@@ -20,7 +19,7 @@ export const SchemasList: React.FC = () => {
   }, [])
 
   return (
-    <PageLayout>
+    <>
       {!!toastInfo && (
         <Toast
           title={toastInfo.title}
@@ -38,6 +37,6 @@ export const SchemasList: React.FC = () => {
           </div>
         ))}
       </div>
-    </PageLayout>
+    </>
   );
 };

@@ -13,4 +13,8 @@ export class SchemasService extends BaseService {
   async getAllSchemas(): Promise<SchemaDto[]> {
     return await this.get("/schemas")
   }
+
+  async getSchema(id: string): Promise<SchemaDto> {
+    return await this.get(`/schemas/${id}`)
+  }
 }
