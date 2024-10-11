@@ -1,20 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { SchemaDto } from "../types/SchemaDto";
 import toast from "react-hot-toast";
 import { ServicesContext } from "../contexts/ServiceContext";
+import { useOnMountRequest } from "../hooks/useOnMountRequest";
 
 export const SchemasList: React.FC = () => {
   const { schemasService } = useContext(ServicesContext)
   const [schemas, setSchemas] = useState<SchemaDto[]>([])
 
-  useEffect(() => {
-    schemasService.getAllSchemas()
-      .then((schemas) => setSchemas(schemas))
-      .catch((err) => {
-        toast.error("Não foi possível buscar schemas")
-        console.error(err)
-      })
-  }, [])
+  useOnMountRequest(async () => {
+    try {
+      const result = await schemasService.getAllSchemas()
+      setSchemas(result)
+    } catch (error) {
+      toast.error("Não foi possível buscar schemas")
+      console.error(error)
+    }
+  })
 
   return (
     <>
