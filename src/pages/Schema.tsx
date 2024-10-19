@@ -1,59 +1,43 @@
-import React, { ReactNode, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FieldEditor } from '../components/FieldEditor'
-import { Field } from '../types/Field'
-import { api } from '../utils/api'
 import { FieldType } from '../types/FieldType'
-import { Toast } from '../components/Toast'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleCheck, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons'
-
-interface SchemaDto {
-  name: string
-  json_schema: Field
-}
+import { SchemaDto } from '../types/SchemaDto'
+import { ServicesContext } from '../contexts/ServiceContext'
+import { useParams } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 export const Schema: React.FC = () => {
-  const [toastInfo, setToastInfo] = useState<{ title: ReactNode, message: string }>();
+  let { id } = useParams()
+
+  const { schemasService } = useContext(ServicesContext)
+  const [schema, setSchema] = useState<Partial<SchemaDto>>({})
+
+  useEffect(() => {
+    if (id)
+      schemasService.getSchema(id)
+        .then(setSchema)
+        .catch(() => toast.error("Não foi possível carregar o modelo que está tentando editar, por favor, tente novamente ou entre em contato."))
+  }, [id])
 
   const saveSchema = async (schema: SchemaDto) => {
     try {
-      api.put("/schemas", schema)
-      setToastInfo({
-        title: (
-          <>
-            <FontAwesomeIcon icon={faCircleCheck} className='mr-2 text-green-500' />
-            Modelo salvo com sucesso!
-          </>
-        ),
-        message: ""
-      })
+      await schemasService.saveSchema(schema)
+      toast.success('Modelo salvo com sucesso!')
       return true
-    } catch (error: any) {
-      setToastInfo({
-        title: (
-          <>
-            <FontAwesomeIcon icon={faTriangleExclamation} className='mr-2 text-red-500' />
-            Erro ao salvar modelo!
-          </>
-        ),
-        message: error.message
-      })
+    } catch (error) {
+      toast.error('Erro ao salvar modelo!')
+      console.error(error)
       return false
     }
   }
 
   return (
     <>
-      {!!toastInfo && (
-        <Toast
-          title={toastInfo.title}
-          message={toastInfo.message}
-          onClose={() => setToastInfo(undefined)}
-        />
-      )}
       <FieldEditor
+        fields={schema.json_schema?.properties}
         onSave={async (name, properties) =>
           await saveSchema({
+            id: schema.id,
             name,
             json_schema: {
               name,
