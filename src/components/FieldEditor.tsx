@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Field } from '../types/Field';
 import { FieldInput } from './FieldInput';
 import { FieldType } from '../types/FieldType';
@@ -8,13 +8,24 @@ import { createEmptyField } from '../utils/createEmptyField';
 import toast from 'react-hot-toast';
 
 interface FieldEditorProps {
+  name?: string
   fields?: Field[]
   onSave?: (name: string, schema: Field[]) => boolean | Promise<boolean>
 }
 
-export const FieldEditor: React.FC<FieldEditorProps> = ({ fields: initialFields, onSave }) => {
+export const FieldEditor: React.FC<FieldEditorProps> = ({ name: initialName, fields: initialFields, onSave }) => {
   const [name, setName] = useState<string>("")
-  const [fields, setFields] = useState<Field[]>(initialFields ?? []);
+  const [fields, setFields] = useState<Field[]>([]);
+
+  useEffect(() => {
+    if (initialFields)
+      setFields(initialFields)
+  }, [initialFields])
+
+  useEffect(() => {
+    if (initialName)
+      setName(initialName)
+  }, [initialName])
 
   const handleFieldChange = (index: number) => (updatedField: Field) => {
     setFields(f => {
@@ -89,7 +100,7 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({ fields: initialFields,
 
         <div className="space-y-4">
           {fields.map((field, index) => (
-            <div key={index} className="p-4 border rounded-md">
+            <div key={index} className="p-4 border rounded-md bg-neutral-50">
               <FieldInput
                 field={field}
                 onChange={handleFieldChange(index)}

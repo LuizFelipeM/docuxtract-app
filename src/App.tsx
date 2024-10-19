@@ -19,7 +19,7 @@ export function App() {
 
         <Route path="/" element={<AuthenticationGuard Component={PageLayout} />}>
 
-          <Route path="schema">
+          <Route path="schemas">
             <Route path="new" element={<Schema />} />
             <Route path="list" element={<SchemasList />} />
             <Route path=":id" element={<Schema />} />
