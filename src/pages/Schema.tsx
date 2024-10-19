@@ -16,7 +16,7 @@ export const Schema: React.FC = () => {
   useOnMountRequest(async () => {
     try {
       if (id) {
-        setSchema(await schemasService.getSchema(id))
+        setSchema(await schemasService.get(id))
       }
     } catch (error) {
       toast.error("Não foi possível carregar o modelo que está tentando editar, por favor, tente novamente ou entre em contato.")
@@ -26,7 +26,7 @@ export const Schema: React.FC = () => {
 
   const saveSchema = async (schema: SchemaDto) => {
     try {
-      await schemasService.saveSchema(schema)
+      await schemasService.save(schema)
       toast.success('Modelo salvo com sucesso!')
       return true
     } catch (error) {

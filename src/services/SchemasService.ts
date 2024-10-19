@@ -6,15 +6,19 @@ export class SchemasService extends BaseService {
     super(getAccessTokenSilently);
   }
 
-  async saveSchema(schema: SchemaDto): Promise<void> {
-    return await this.put("/schemas", schema)
+  async save(schema: SchemaDto): Promise<void> {
+    return await this.PUT("/schemas", schema)
   }
 
-  async getAllSchemas(): Promise<SchemaDto[]> {
-    return await this.get("/schemas")
+  async getAll(): Promise<SchemaDto[]> {
+    return await this.GET("/schemas")
   }
 
-  async getSchema(id: string): Promise<SchemaDto> {
-    return await this.get(`/schemas/${id}`)
+  async get(id: string): Promise<SchemaDto> {
+    return await this.GET(`/schemas/${id}`)
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.DELETE(`/schemas/${id}`)
   }
 }
