@@ -31,19 +31,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         </div>
         <ul className="mt-6 space-y-2">
           <li>
-            <Link to="/new-schema" className="block px-4 py-2 transition-all hover:bg-gray-800" onClick={toggleSidebar}>
+            <Link to="/schema/new" className="block px-4 py-2 transition-all hover:bg-gray-800" onClick={toggleSidebar}>
               <FontAwesomeIcon icon={faPlus} className="mr-2" />
               Criar novo modelo
             </Link>
           </li>
           <li>
-            <Link to="/my-schemas" className="block px-4 py-2 transition-all hover:bg-gray-800" onClick={toggleSidebar}>
+            <Link to="/schema/list" className="block px-4 py-2 transition-all hover:bg-gray-800" onClick={toggleSidebar}>
               <FontAwesomeIcon icon={faList} className="mr-2" />
               Meus modelos
             </Link>
           </li>
           <li>
-            <Link to="/data-extraction" className="block px-4 py-2 transition-all hover:bg-gray-800" onClick={toggleSidebar}>
+            <Link to="/extraction" className="block px-4 py-2 transition-all hover:bg-gray-800" onClick={toggleSidebar}>
               <FontAwesomeIcon icon={faFile} className="mr-2" />
               Extrair dados
             </Link>

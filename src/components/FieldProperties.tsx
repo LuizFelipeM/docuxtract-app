@@ -49,7 +49,7 @@ export const FieldProperties: React.FC<FieldPropertiesProps> = ({ field, onChang
             };
             onChange(updatedField);
           }}
-          className="mt-2 bg-green-500 text-white px-4 py-2 rounded"
+          className="mt-2 bg-green-600 text-white px-4 py-2 rounded"
         >
           <FontAwesomeIcon icon={faPlus} className='mr-2' />
           Adicionar Propriedade
