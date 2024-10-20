@@ -7,6 +7,7 @@ import { AuthenticationGuard } from './components/AuthenticationGuard'
 import { Callback } from './pages/Callback'
 import { PageLayout } from './pages/PageLayout'
 import { Toaster } from 'react-hot-toast'
+import { SchemaEdit } from './pages/SchemaEdit'
 
 export function App() {
   return (
@@ -19,10 +20,10 @@ export function App() {
 
         <Route path="/" element={<AuthenticationGuard Component={PageLayout} />}>
 
-          <Route path="schema">
+          <Route path="schemas">
             <Route path="new" element={<Schema />} />
+            <Route path=":id" element={<SchemaEdit />} />
             <Route path="list" element={<SchemasList />} />
-            <Route path=":id" element={<Schema />} />
           </Route>
 
           <Route path="extraction" element={<DataExtraction />} />

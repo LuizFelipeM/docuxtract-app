@@ -1,33 +1,79 @@
-import React, { useContext, useState } from "react";
-import { SchemaDto } from "../types/SchemaDto";
+import React, { useContext } from "react";
 import toast from "react-hot-toast";
 import { ServicesContext } from "../contexts/ServiceContext";
-import { useOnMountRequest } from "../hooks/useOnMountRequest";
+import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export const SchemasList: React.FC = () => {
-  const { schemasService } = useContext(ServicesContext)
-  const [schemas, setSchemas] = useState<SchemaDto[]>([])
+  const navigate = useNavigate();
 
-  useOnMountRequest(async () => {
-    try {
-      const result = await schemasService.getAllSchemas()
-      setSchemas(result)
-    } catch (error) {
-      toast.error("Não foi possível buscar schemas")
+  const { schemasService } = useContext(ServicesContext)
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["schemasListQuery"],
+    retry: false,
+    queryFn: async () => await schemasService.getAll(),
+  })
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["schemasListMutation"],
+    mutationFn: async (id: string) => {
+      await schemasService.delete(id)
+      refetch()
+    },
+    onError: (error) => {
+      toast.error("Não foi possível deletar o modelo, por favor, entre em contato com o time de suporte.")
       console.error(error)
     }
   })
 
   return (
     <>
-      <div>
-        <h2 className="text-2xl font-bold">List of Schemas</h2>
-        <p>Here you will see all the schemas you have created.</p>
-        {schemas.map((schema) => (
-          <div key={schema.id}>
-            <p>{schema.id} - {schema.name}</p>
-          </div>
-        ))}
+      <div className="flex-1 p-6">
+        <div className="flex flex-col max-w-[850px] mx-auto p-4">
+          <h2 className="text-2xl font-bold mb-2">Seus modelos</h2>
+          <p className="mb-6">Aqui estão todos os seus modelos criados, você pode edita-los e remove-los quando desejar.</p>
+
+          <table className="min-w-full table-auto border-collapse border-0">
+            <thead>
+              <tr>
+                <th className="border-b p-2 text-left">Nome do modelo</th>
+                <th className="border-b p-2 text-right"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.map(({ id, name }) => (
+                <tr key={id} className="hover:bg-gray-200 transition-all transform-gpu">
+                  <td className="border-b p-2">
+                    {name}
+                  </td>
+                  <td className="border-b p-2 text-right">
+                    <button
+                      disabled={isLoading || isPending}
+                      onClick={() => navigate(`/schemas/${id}`)}
+                      className="bg-blue-500 disabled:bg-gray-400 text-white px-3 py-1 rounded transition-all transform-gpu"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      disabled={isLoading || isPending}
+                      onClick={() => mutate(id!)}
+                      className="bg-red-500 disabled:bg-gray-400 text-white px-3 py-1 rounded ml-2 transition-all transform-gpu"
+                    >
+                      <span className="block min-w-16">
+                        {isLoading || isPending ?
+                          <FontAwesomeIcon icon={faSpinner} spin /> :
+                          'Deletar'}
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );
