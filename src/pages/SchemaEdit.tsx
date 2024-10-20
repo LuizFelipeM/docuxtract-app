@@ -1,16 +1,31 @@
+import { useQuery, useMutation } from '@tanstack/react-query'
 import React, { useContext } from 'react'
+import toast from 'react-hot-toast'
+import { useParams } from 'react-router-dom'
 import { FieldEditor } from '../components/FieldEditor'
+import { ServicesContext } from '../contexts/ServiceContext'
 import { FieldType } from '../types/FieldType'
 import { SchemaDto } from '../types/SchemaDto'
-import { ServicesContext } from '../contexts/ServiceContext'
-import toast from 'react-hot-toast'
-import { useMutation } from '@tanstack/react-query'
 
-export const Schema: React.FC = () => {
+export const SchemaEdit: React.FC = () => {
+  let { id } = useParams()
+
+  if (!id)
+    toast.error("Não é possível encontrar o modelo solicitado para edição!")
+
   const { schemasService } = useContext(ServicesContext)
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["newSchemaMutation"],
+  const { data, isLoading } = useQuery({
+    queryKey: ["schema", id, "query"],
+    retry: false,
+    enabled: !!id,
+    queryFn: async () => {
+      return await schemasService.get(id!)
+    },
+  })
+
+  const { mutate } = useMutation({
+    mutationKey: ["schema", id, "mutation"],
     mutationFn: async (schema: SchemaDto) => {
       await schemasService.save(schema)
       toast.success("Modelo salvo com sucesso!")
@@ -24,9 +39,12 @@ export const Schema: React.FC = () => {
   return (
     <>
       <FieldEditor
-        isLoading={isPending}
+        name={data?.name}
+        fields={data?.json_schema?.properties}
+        isLoading={isLoading}
         onSave={(name, properties) => {
           mutate({
+            id: data?.id,
             name,
             json_schema: {
               name,

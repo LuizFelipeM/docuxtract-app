@@ -10,9 +10,10 @@ interface FieldInputProps {
   onChange: (field: Field) => void;
   disableRemoveButton?: boolean
   onRemove?: () => void;
+  isLoading?: boolean
 }
 
-export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disableRemoveButton, onRemove }) => {
+export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disableRemoveButton, onRemove, isLoading }) => {
   return (
     <>
       <div className="mb-3">
@@ -24,7 +25,8 @@ export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disable
               placeholder="Nome"
               value={field.name}
               onChange={(e) => onChange({ ...field, name: e.target.value })}
-              className="ml-2 p-1 border rounded "
+              className="ml-2 p-1 border rounded"
+              disabled={isLoading}
               required
             />
           </h4>
@@ -32,7 +34,7 @@ export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disable
             <button
               className="text-white bg-red-500 px-4 py-1 rounded disabled:bg-slate-400 transition-all"
               onClick={onRemove}
-              disabled={disableRemoveButton}
+              disabled={disableRemoveButton || isLoading}
             >
               <FontAwesomeIcon icon={faTrash} />
             </button>
@@ -53,6 +55,7 @@ export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disable
                 })
               }}
               className="border p-1 rounded"
+              disabled={isLoading}
               required
             >
               {Object.values(FieldType).map((key) => (
@@ -71,6 +74,7 @@ export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disable
                 checked={field.required}
                 onChange={(e) => onChange({ ...field, required: e.target.checked })}
                 className="sr-only peer"
+                disabled={isLoading}
               />
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:bg-blue-600 peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all" />
             </label>
@@ -83,6 +87,7 @@ export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disable
               value={field.description}
               onChange={(e) => onChange({ ...field, description: e.target.value })}
               className="border p-1 rounded"
+              disabled={isLoading}
               required
             />
           </div>

@@ -10,10 +10,11 @@ import toast from 'react-hot-toast';
 interface FieldEditorProps {
   name?: string
   fields?: Field[]
-  onSave?: (name: string, schema: Field[]) => boolean | Promise<boolean>
+  isLoading?: boolean
+  onSave?: (name: string, schema: Field[]) => void
 }
 
-export const FieldEditor: React.FC<FieldEditorProps> = ({ name: initialName, fields: initialFields, onSave }) => {
+export const FieldEditor: React.FC<FieldEditorProps> = ({ name: initialName, fields: initialFields, isLoading, onSave }) => {
   const [name, setName] = useState<string>("")
   const [fields, setFields] = useState<Field[]>([]);
 
@@ -69,10 +70,9 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({ name: initialName, fie
       return
     }
 
-    if (await onSave?.(name, fields)) {
-      setName("")
-      setFields([])
-    }
+    onSave?.(name, fields)
+    setName("")
+    setFields([])
   }
 
   return (
@@ -86,6 +86,7 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({ name: initialName, fie
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="ml-2 p-1 border rounded "
+            disabled={isLoading}
             required
           />
         </h1>
@@ -103,6 +104,7 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({ name: initialName, fie
             <div key={index} className="p-4 border rounded-md bg-neutral-50">
               <FieldInput
                 field={field}
+                isLoading={isLoading}
                 onChange={handleFieldChange(index)}
                 onRemove={() => removeField(index)}
               />
@@ -110,11 +112,11 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({ name: initialName, fie
           ))}
         </div>
         <div className='flex justify-between'>
-          <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded" onClick={addField}>
+          <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded" onClick={addField} disabled={isLoading}>
             <FontAwesomeIcon icon={faPlus} className='mr-2' />
             Adicionar Campo
           </button>
-          <button className="mt-4 bg-green-600 text-white px-4 py-2 rounded" onClick={saveSchema}>
+          <button className="mt-4 bg-green-600 text-white px-4 py-2 rounded" onClick={saveSchema} disabled={isLoading}>
             <FontAwesomeIcon icon={faFloppyDisk} className='mr-2' />
             Salvar Modelo
           </button>
