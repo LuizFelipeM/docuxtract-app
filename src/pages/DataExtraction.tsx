@@ -1,132 +1,10 @@
-import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import { utils, writeFile } from "xlsx";
-
-type JSONValue = string | number | boolean | Date | Array<JSONValue> | JSONObject;
-type JSONObject = { [key: string]: JSONValue };
-
-// Utility to flatten nested objects into a single level
-const flattenJSON = (obj: JSONObject, parentKey: string = '', res: JSONObject = {}): JSONObject => {
-  for (let key in obj) {
-    const propName = parentKey ? `${parentKey}.${key}` : key;
-
-    if (typeof obj[key] === 'object' && !Array.isArray(obj[key]) && obj[key] !== null) {
-      flattenJSON(obj[key] as JSONObject, propName, res);
-    } else if (Array.isArray(obj[key])) {
-      const arrayItems = obj[key] as Array<JSONValue>;
-
-      if (arrayItems.every(item => typeof item === 'object' && item !== null)) {
-        arrayItems.forEach((item, index) => {
-          flattenJSON(item as JSONObject, `${propName}[${index}]`, res);
-        });
-      } else {
-        res[propName] = arrayItems.join(', ');
-      }
-    } else {
-      res[propName] = obj[key];
-    }
-  }
-  return res;
-};
-
-interface JSONTableProps {
-  title?: string
-  data: JSONObject[];
-}
-
-const JSONTable: React.FC<JSONTableProps> = ({ title, data }) => {
-  if (!data || data.length === 0) return <div>No data available</div>;
-
-  // Step 1: Flatten each JSON object
-  const flattenedData = data.map((item) => flattenJSON(item));
-
-  // Step 2: Get all unique keys (headers) dynamically from the flattened objects
-  const allKeys = Array.from(new Set(flattenedData.flatMap((item) => Object.keys(item))));
-
-  // Function to export table content as an XLSX file
-  const exportToExcel = () => {
-    const worksheetData = flattenedData.map(item => {
-      return allKeys.map(key => item[key] ?? ''); // Map the data for each key
-    });
-
-    // Prepare the worksheet and workbook
-    const worksheet = utils.aoa_to_sheet([allKeys, ...worksheetData]);
-    const workbook = utils.book_new();
-    utils.book_append_sheet(workbook, worksheet, 'Data');
-
-    // Export the file
-    writeFile(workbook, 'data.xlsx');
-  };
-
-  return (
-    <div className="relative">
-      <div className="flex flex-row mb-2">
-        <span className="flex-grow">{title}</span>
-        <button
-          className="bg-blue-500 text-white px-2 py-1 rounded"
-          onClick={exportToExcel}
-        >
-          <FontAwesomeIcon icon={faFileExcel} />
-        </button>
-      </div>
-
-      <table className="table-auto border-collapse border border-gray-300 w-full">
-        <thead>
-          <tr className="bg-gray-100">
-            {allKeys.map((key) => (
-              <th key={key} className="border border-gray-300 px-4 py-2">{key}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {flattenedData.map((item, index) => (
-            <tr key={index}>
-              {allKeys.map((key) => (
-                <td key={key} className="border border-gray-300 px-4 py-2">
-                  <JSONValueRenderer value={item[key]} />
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
-
-interface JSONValueRendererProps {
-  value: JSONValue | undefined;
-}
-
-const JSONValueRenderer: React.FC<JSONValueRendererProps> = ({ value }) => {
-  if (value === undefined || value === null) return <span>-</span>;
-
-  if (Array.isArray(value))
-    return (
-      <ul className="list-disc list-inside">
-        {value.map((item, index) => (
-          <li key={index}>
-            <JSONValueRenderer value={item} />
-          </li>
-        ))}
-      </ul>
-    );
-
-  if (value instanceof Date)
-    return <span>{value.toISOString()}</span>;
-
-  switch (typeof value) {
-    case "string":
-      return <span>{value}</span>;
-    case "boolean":
-      return <span>{value ? 'True' : 'False'}</span>;
-    case "number":
-      return <span>{value}</span>;
-    default:
-      throw new Error(`Unexpected type of ${typeof value}`)
-  }
-};
+import React, { useContext, useState } from "react";
+import { JSONTable } from "../components/JSONTable";
+import { SchemaSelect } from "../components/SchemaSelect";
+import { ServicesContext } from "../contexts/ServiceContext";
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import { FileUpload } from "../components/FileUpload";
 
 //#region Tables
 
@@ -368,72 +246,47 @@ const InvoiceGrid = ({ invoices }: any) => {
 //#endregion
 
 export const DataExtraction: React.FC = () => {
-  const jsonData: JSONObject[] = [
-    {
-      name: "John Doe",
-      age: 30,
-      // registered: true,
-      dateOfBirth: new Date(1990, 6, 20),
-      addresses: [
-        { street: "123 Main St", city: "Anytown" },
-        { street: "456 Side St", city: "Othertown" },
-      ],
+  const [schemaId, setSchemaId] = useState<string | undefined>(undefined)
+
+  const { pipelinesService } = useContext(ServicesContext)
+
+  const { data, mutate, isPending } = useMutation({
+    mutationKey: ["extractDataMutation"],
+    mutationFn: async (file: File) => {
+      if (!schemaId) {
+        toast.error("Não é possível extrair informações sem um modelo selecionado.")
+        return
+      }
+
+      const result = await pipelinesService.extractData(schemaId, file)
+      toast.success("Extração realizada com sucesso!")
+      return [result]
     },
-    {
-      name: "Jane Smith",
-      age: 25,
-      registered: false,
-      dateOfBirth: new Date(1995, 3, 15),
-      addresses: [
-        // { street: "789 Sheet St", city: "Unkowntown" },
-        { street: "1003 Buceta St", city: "Abstown" },
-      ],
+    onError: (error) => {
+      toast.error("Erro ao executar extração! Por favor, entre em contato com o time de suporte.")
+      console.error(error)
     }
-  ];
-
-  const jsonData2: JSONObject[] = [
-    {
-      "due_date": "2024-09-27",
-      "bill_to_name": "BTG Pactual",
-      "items": [
-        {
-          "id": 1,
-          "description": "Brochure Design",
-          "quantity": 2,
-          "rate": 100
-        },
-        {
-          "id": 2,
-          "description": "Agenda",
-          "quantity": 290,
-          "rate": 20
-        },
-        {
-          "id": 3,
-          "description": "Clip",
-          "quantity": 200000,
-          "rate": 0.15
-        },
-        {
-          "id": 4,
-          "description": "Smartphone",
-          "quantity": 1,
-          "rate": 2000
-        }
-      ]
-    }
-  ];
-
+  })
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Dynamic JSON Table</h1>
-      <JSONTable title="Resultados" data={jsonData} />
-      <InvoiceList invoices={invoices} />
+      <h1 className="text-xl font-bold mb-4">Extrair dados</h1>
+      <div className="flex flex-row mb-8">
+        <SchemaSelect
+          className="mr-2"
+          onChange={setSchemaId}
+          disabled={isPending}
+        />
+        <FileUpload onUpload={(file) => mutate(file)} disabled={!schemaId || isPending} />
+      </div>
+
+      <JSONTable title="Resultados" data={data ?? []} />
+
+      {/* <InvoiceList invoices={invoices} />
       <InvoiceCard invoices={invoices} />
       <InvoiceAccordion invoices={invoices} />
       <InvoiceListWithModal invoices={invoices} />
-      <InvoiceGrid invoices={invoices} />
+      <InvoiceGrid invoices={invoices} /> */}
     </div>
   );
 
