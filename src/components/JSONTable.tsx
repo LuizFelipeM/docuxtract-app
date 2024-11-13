@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { utils, writeFile } from "xlsx";
 import { JSONObject } from "../types/JSONObject";
 import { JSONValue } from "../types/JSONValue";
+import React from "react";
 
 interface JSONTableProps {
   title?: string
@@ -10,7 +11,7 @@ interface JSONTableProps {
 }
 
 export const JSONTable: React.FC<JSONTableProps> = ({ title, data }) => {
-  if (!data || data.length === 0) return <div>Sem informações disponíveis</div>;
+  const hasData = () => !!data && data.length > 0
 
   // Step 1: Flatten each JSON object
   const flattenedData = data.map((item) => flattenJSON(item));
@@ -33,18 +34,8 @@ export const JSONTable: React.FC<JSONTableProps> = ({ title, data }) => {
     writeFile(workbook, 'data.xlsx');
   };
 
-  return (
-    <div className="relative">
-      <div className="flex flex-row mb-2">
-        <span className="flex-grow">{title}</span>
-        <button
-          className="bg-blue-600 text-white px-2 py-1 rounded"
-          onClick={exportToExcel}
-        >
-          <FontAwesomeIcon icon={faFileExcel} />
-        </button>
-      </div>
-
+  const Table: React.FC = () => {
+    return (
       <table className="table-auto border-collapse border border-gray-300 w-full">
         <thead>
           <tr className="bg-gray-100">
@@ -65,6 +56,23 @@ export const JSONTable: React.FC<JSONTableProps> = ({ title, data }) => {
           ))}
         </tbody>
       </table>
+    )
+  }
+
+  return (
+    <div className="relative">
+      <div className="flex flex-row mb-4">
+        <span className="flex-grow text-xl font-bold self-center">{title}</span>
+        {hasData() &&
+          <button
+            className="bg-blue-600 text-white px-2 py-1 rounded  self-center"
+            onClick={exportToExcel}
+          >
+            <FontAwesomeIcon icon={faFileExcel} />
+          </button>}
+      </div>
+
+      {hasData() ? <Table /> : <div>Sem informações disponíveis</div>}
     </div>
   );
 };

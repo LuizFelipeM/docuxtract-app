@@ -26,25 +26,30 @@ export const SchemaSelect: React.FC<SelectProps> = ({ label, placeholder = "Sele
     onChange?.(value);
   };
 
+  const unselectedOptionLabel = () => {
+    if (isLoading) return "Carregando..."
+    if (error) return "Erro ao carregar modelos"
+    return placeholder
+  }
+
   return (
     <div className={`flex flex-col ${className}`}>
       {label && <label className="mb-1 text-sm font-medium text-gray-700">{label}</label>}
       <div className="relative">
         <select
-          className="w-full px-3 py-2 text-gray-700 border rounded-md shadow-sm appearance-none bg-white border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="w-full min-w-60 px-3 py-2 text-gray-800 aria-[errormessage]:text-red-500 border rounded-md shadow-sm appearance-none bg-white border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           value={selectedValue || ''}
           onChange={(e) => handleSelect(e.target.value)}
           disabled={isLoading || !!error || disabled}
+          aria-errormessage={!!error ? "Erro ao carregar modelos" : undefined}
         >
-          <option value="">{placeholder}</option>
+          <option value="">{unselectedOptionLabel()}</option>
           {data && data.map((option) => (
             <option key={option.id} value={option.id}>
               {option.label}
             </option>
           ))}
         </select>
-        {isLoading && <p className="mt-2 text-sm text-gray-500">Carregando...</p>}
-        {error && <p className="mt-2 text-sm text-red-500">Erro ao carregar modelos</p>}
       </div>
     </div>
   );

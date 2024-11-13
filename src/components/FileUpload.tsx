@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 type FileUploadButtonProps = {
   disabled?: boolean
+  loading?: boolean
   onUpload?: (file: File) => void,
 }
 
