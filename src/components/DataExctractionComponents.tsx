@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-const InvoiceList = ({ invoices }: any) => {
+export const InvoiceList = ({ invoices }: any) => {
   const [expanded, setExpanded] = useState<any>({});
 
   const toggleExpand = (index: any) => {
@@ -60,25 +60,10 @@ const InvoiceList = ({ invoices }: any) => {
     </table>
   );
 };
-
-// Example usage
-const invoices = [
-  {
-    due_date: '2024-09-27',
-    bill_to_name: 'BTG Pactual',
-    items: [
-      { id: 1, description: 'Brochure Design', quantity: 2, rate: 100 },
-      { id: 2, description: 'Agenda', quantity: 290, rate: 20 },
-      { id: 3, description: 'Clip', quantity: 200000, rate: 0.15 },
-      { id: 4, description: 'Smartphone', quantity: 1, rate: 2000 },
-    ],
-  },
-];
-
 //#endregion 
 
 //#region Cards
-const InvoiceCard = ({ invoices }: any) => {
+export const InvoiceCard = ({ invoices }: any) => {
   const [expanded, setExpanded] = useState<any>({});
 
   const toggleExpand = (index: any) => {
@@ -123,7 +108,7 @@ const InvoiceCard = ({ invoices }: any) => {
 //#endregion
 
 //#region Accordion
-const InvoiceAccordion = ({ invoices }: any) => {
+export const InvoiceAccordion = ({ invoices }: any) => {
   const [openIndex, setOpenIndex] = useState<any>(null);
 
   const toggleOpen = (index: any) => {
@@ -165,7 +150,7 @@ const InvoiceAccordion = ({ invoices }: any) => {
 //#endregion
 
 //#region List with modal
-const InvoiceListWithModal = ({ invoices }: any) => {
+export const InvoiceListWithModal = ({ invoices }: any) => {
   const [selectedInvoice, setSelectedInvoice] = useState<any>(null);
 
   const handleOpenModal = (invoice: any) => setSelectedInvoice(invoice);
@@ -216,7 +201,7 @@ const InvoiceListWithModal = ({ invoices }: any) => {
 //#endregion
 
 //#region Grid
-const InvoiceGrid = ({ invoices }: any) => {
+export const InvoiceGrid = ({ invoices }: any) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {invoices.map((invoice: any, index: any) => (
