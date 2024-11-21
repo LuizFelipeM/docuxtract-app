@@ -58,6 +58,10 @@ export const en: ResourceLanguage = {
     mySchemas: "My schemas",
     // #endregion    
 
+    // #region JSONTable
+    noInfoAvailable: "No information available",
+    // #endregion
+
     // #region FieldEditor
     schemaNameRequired: "The schema name is required!",
     theSchemaMustHaveAtLeastOneField: "Invalid schema, the schema must have at least one field added.",

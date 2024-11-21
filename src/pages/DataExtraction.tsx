@@ -43,7 +43,7 @@ export const DataExtraction: React.FC = () => {
         <FileUpload onUpload={(file) => mutate(file)} disabled={!schemaId || isPending} />
       </div>
 
-      <JSONTable title="Resultados" data={data ?? []} />
+      <JSONTable title={t("results")} data={data ?? []} />
     </div>
   );
 

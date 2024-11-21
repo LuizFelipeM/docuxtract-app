@@ -12,6 +12,7 @@ interface JSONTableProps {
 }
 
 export const JSONTable: React.FC<JSONTableProps> = ({ title, data }) => {
+  const { t } = useTranslation()
   const hasData = () => !!data && data.length > 0
 
   // Step 1: Flatten each JSON object
@@ -73,7 +74,7 @@ export const JSONTable: React.FC<JSONTableProps> = ({ title, data }) => {
           </button>}
       </div>
 
-      {hasData() ? <Table /> : <div>Sem informações disponíveis</div>}
+      {hasData() ? <Table /> : <div>{t("noInfoAvailable")}</div>}
     </div>
   );
 };

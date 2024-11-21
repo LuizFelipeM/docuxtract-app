@@ -58,6 +58,10 @@ export const pt: ResourceLanguage = {
     mySchemas: "Meus modelos",
     // #endregion    
 
+    // #region JSONTable
+    noInfoAvailable: "Sem informações disponíveis",
+    // #endregion
+
     // #region FieldEditor
     schemaNameRequired: "O nome do modelo é obrigatório!",
     theSchemaMustHaveAtLeastOneField: "Modelo inválido, o modelo deve ter ao menos 1 campo adicionado.",
