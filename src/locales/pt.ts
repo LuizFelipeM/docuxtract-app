@@ -16,6 +16,9 @@ export const pt: ResourceLanguage = {
     edit: "Editar",
     delete: "Deletar",
     results: "Resultados",
+    error: "Erro",
+    pleaseWait: "Por favor aguarde",
+    name: "Nome",
     en: "Inglês",
     pt: "Português",
     // #endregion
@@ -34,6 +37,7 @@ export const pt: ResourceLanguage = {
     successSchemaSaved: "Modelo salvo com sucesso!",
     errorSavingSchema: "Erro ao salvar modelo! Por favor, entre em contato com o time de suporte.",
     modelDescription: "Modelo {{name}} a ser extraído",
+    unableToFindTheSelectedSchema: "Não é possível encontrar o modelo solicitado para edição!",
     // #endregion
 
     // #region SchemaList
@@ -68,6 +72,14 @@ export const pt: ResourceLanguage = {
     // #region FieldProperties
     addProperty: "Adicionar Propriedade",
     typeOfItemsInTheList: "Tipo de itens na lista:",
+    // #endregion
+
+    // #region FieldType
+    array: "Lista",
+    string: "Texto",
+    number: "Número",
+    datetime: "Data e Hora",
+    object: "Submodelo",
     // #endregion
   },
 }

@@ -4,6 +4,7 @@ import { utils, writeFile } from "xlsx";
 import { JSONObject } from "../types/JSONObject";
 import { JSONValue } from "../types/JSONValue";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface JSONTableProps {
   title?: string
@@ -84,6 +85,8 @@ interface JSONValueRendererProps {
 const JSONValueRenderer: React.FC<JSONValueRendererProps> = ({ value }) => {
   if (value === undefined || value === null) return <span>-</span>;
 
+  const { t } = useTranslation()
+
   if (Array.isArray(value))
     return (
       <ul className="list-disc list-inside">
@@ -102,7 +105,7 @@ const JSONValueRenderer: React.FC<JSONValueRendererProps> = ({ value }) => {
     case "string":
       return <span>{value}</span>;
     case "boolean":
-      return <span>{value ? 'True' : 'False'}</span>;
+      return <span>{value ? t("true") : t("false")}</span>;
     case "number":
       return <span>{value}</span>;
     default:

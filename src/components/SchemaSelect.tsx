@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useContext, useState } from 'react';
 import { ServicesContext } from '../contexts/ServiceContext';
+import { useTranslation } from 'react-i18next';
 
 type SelectProps = {
   label?: string
@@ -10,7 +11,9 @@ type SelectProps = {
   onChange?: (value: string) => void
 };
 
-export const SchemaSelect: React.FC<SelectProps> = ({ label, placeholder = "Selecione um modelo", onChange, className, disabled }) => {
+export const SchemaSelect: React.FC<SelectProps> = ({ label, placeholder, onChange, className, disabled }) => {
+  const { t } = useTranslation()
+
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
 
   const { schemasService } = useContext(ServicesContext)
@@ -27,9 +30,9 @@ export const SchemaSelect: React.FC<SelectProps> = ({ label, placeholder = "Sele
   };
 
   const unselectedOptionLabel = () => {
-    if (isLoading) return "Carregando..."
-    if (error) return "Erro ao carregar modelos"
-    return placeholder
+    if (isLoading) return `${t("loading")}...`
+    if (error) return t("errorLoadingSchemas")
+    return placeholder ?? t("chooseASchema")
   }
 
   return (

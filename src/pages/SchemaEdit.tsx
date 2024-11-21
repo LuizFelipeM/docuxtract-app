@@ -6,12 +6,14 @@ import { FieldEditor } from '../components/FieldEditor'
 import { ServicesContext } from '../contexts/ServiceContext'
 import { FieldType } from '../types/FieldType'
 import { SchemaDto } from '../types/SchemaDto'
+import { useTranslation } from 'react-i18next'
 
 export const SchemaEdit: React.FC = () => {
   let { id } = useParams()
+  const { t } = useTranslation()
 
   if (!id)
-    toast.error("Não é possível encontrar o modelo solicitado para edição!")
+    toast.error(t("unableToFindTheSelectedSchema"))
 
   const { schemasService } = useContext(ServicesContext)
 
@@ -28,10 +30,10 @@ export const SchemaEdit: React.FC = () => {
     mutationKey: ["schema", id, "mutation"],
     mutationFn: async (schema: SchemaDto) => {
       await schemasService.save(schema)
-      toast.success("Modelo salvo com sucesso!")
+      toast.success(t("successSchemaSaved"))
     },
     onError: (error) => {
-      toast.error("Erro ao salvar modelo! Por favor, entre em contato com o time de suporte.")
+      toast.error(t("errorSavingSchema"))
       console.error(error)
     }
   })
@@ -48,7 +50,7 @@ export const SchemaEdit: React.FC = () => {
             name,
             json_schema: {
               name,
-              description: `Modelo ${name} a ser extraído`,
+              description: t("modelDescription", { name }),
               required: true,
               type: FieldType.object,
               properties

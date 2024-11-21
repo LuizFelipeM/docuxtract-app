@@ -5,18 +5,20 @@ import { SchemaDto } from '../types/SchemaDto'
 import { ServicesContext } from '../contexts/ServiceContext'
 import toast from 'react-hot-toast'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 
 export const Schema: React.FC = () => {
   const { schemasService } = useContext(ServicesContext)
+  const { t } = useTranslation()
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["newSchemaMutation"],
     mutationFn: async (schema: SchemaDto) => {
       await schemasService.save(schema)
-      toast.success("Modelo salvo com sucesso!")
+      toast.success(t("successSchemaSaved"))
     },
     onError: (error) => {
-      toast.error("Erro ao salvar modelo! Por favor, entre em contato com o time de suporte.")
+      toast.error(t("errorSavingSchema"))
       console.error(error)
     }
   })
@@ -30,7 +32,7 @@ export const Schema: React.FC = () => {
             name,
             json_schema: {
               name,
-              description: `Modelo ${name} a ser extraído`,
+              description: t("modelDescription", { name }),
               required: true,
               type: FieldType.object,
               properties

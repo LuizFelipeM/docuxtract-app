@@ -16,6 +16,9 @@ export const en: ResourceLanguage = {
     edit: "Edit",
     delete: "Delete",
     results: "Results",
+    error: "Error",
+    pleaseWait: "Please wait",
+    name: "Name",
     en: "English",
     pt: "Portuguese",
     // #endregion
@@ -34,6 +37,7 @@ export const en: ResourceLanguage = {
     successSchemaSaved: "Schema saved successfully!",
     errorSavingSchema: "Error saving schema! Please contact support team.",
     modelDescription: "Schema {{name}} to be extracted",
+    unableToFindTheSelectedSchema: "Unable to find the requested schema!",
     // #endregion
 
     // #region SchemaList
@@ -68,6 +72,14 @@ export const en: ResourceLanguage = {
     // #region FieldProperties
     addProperty: "Add Property",
     typeOfItemsInTheList: "Type of items in the list:",
+    // #endregion
+
+    // #region FieldType
+    array: "List",
+    string: "Text",
+    number: "Number",
+    datetime: "Date and Time",
+    object: "Subschema",
     // #endregion
   },
 }
