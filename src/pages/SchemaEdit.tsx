@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 
 export const SchemaEdit: React.FC = () => {
   let { id } = useParams()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   if (!id)
     toast.error(t("unableToFindTheSelectedSchema"))
@@ -48,6 +48,7 @@ export const SchemaEdit: React.FC = () => {
           mutate({
             id: data?.id,
             name,
+            language: data?.language ?? i18n.language,
             json_schema: {
               name,
               description: t("modelDescription", { name }),

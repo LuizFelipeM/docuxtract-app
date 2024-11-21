@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 
 export const Schema: React.FC = () => {
   const { schemasService } = useContext(ServicesContext)
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["newSchemaMutation"],
@@ -30,6 +30,7 @@ export const Schema: React.FC = () => {
         onSave={(name, properties) => {
           mutate({
             name,
+            language: i18n.language,
             json_schema: {
               name,
               description: t("modelDescription", { name }),

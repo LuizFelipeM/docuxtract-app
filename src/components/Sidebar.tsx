@@ -18,8 +18,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     setLanguageDropdownOpen(false); // Close dropdown after selection
   };
 
-  const currentLanguage = i18n.language;
-
   return (
     <div>
       {/* Overlay for mobile when the sidebar is open */}
@@ -76,7 +74,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               className="w-full flex items-center justify-between px-4 py-2 bg-gray-700 rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               onClick={() => setLanguageDropdownOpen((prev) => !prev)}
             >
-              <span>{t(currentLanguage)}</span>
+              <span>{t(i18n.language)}</span>
               <FontAwesomeIcon icon={faChevronDown} />
             </button>
 
