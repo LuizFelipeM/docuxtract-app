@@ -5,8 +5,10 @@ import { Auth0ProviderWithNavigate } from './contexts/Auth0ProviderWithNavigate.
 import { ServicesContextProvider } from './contexts/ServicesContextProvider.tsx'
 import { App } from './App.tsx'
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import './index.css'
 import toast from 'react-hot-toast'
+import './index.css'
+import './i18n'
+
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
