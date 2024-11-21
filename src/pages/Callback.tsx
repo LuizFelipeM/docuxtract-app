@@ -1,14 +1,16 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useTranslation } from "react-i18next";
 
 export const Callback: React.FC = () => {
   const { error } = useAuth0();
+  const { t } = useTranslation();
 
   if (error) {
     return (
       <div className="content-layout">
         <h1 id="page-title" className="content__title">
-          Error
+          {t("error")}
         </h1>
         <div className="content__body">
           <p id="page-description">

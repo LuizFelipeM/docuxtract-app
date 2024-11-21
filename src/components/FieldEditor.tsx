@@ -6,6 +6,7 @@ import { faFloppyDisk, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { createEmptyField } from '../utils/createEmptyField';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 interface FieldEditorProps {
   name?: string
@@ -15,6 +16,8 @@ interface FieldEditorProps {
 }
 
 export const FieldEditor: React.FC<FieldEditorProps> = ({ name: initialName, fields: initialFields, isLoading, onSave }) => {
+  const { t } = useTranslation()
+
   const [name, setName] = useState<string>("")
   const [fields, setFields] = useState<Field[]>([]);
 
@@ -55,18 +58,18 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({ name: initialName, fie
 
   const saveSchema = async () => {
     if (!name) {
-      toast.error("O nome do modelo é obrigatório!")
+      toast.error(t("schemaNameRequired"))
       return
     }
 
     if (fields.length === 0) {
-      toast.error("Modelo inválido, o modelo deve ter ao menos 1 campo adicionado.")
+      toast.error(t("theSchemaMustHaveAtLeastOneField"))
       return
     }
 
     const isSchemaValid = fields.reduce((prev, curr) => prev && checkFieldIsValid(curr), true)
     if (!isSchemaValid) {
-      toast.error("Modelo inválido, por favor, verifique os campos obrigatórios antes de tentar salvar novamente.")
+      toast.error(t("invalidSchemaFields"))
       return
     }
 
@@ -79,10 +82,10 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({ name: initialName, fie
     <>
       <div className="flex flex-col max-w-[850px] mx-auto p-4">
         <h1 className="text-3xl font-bold mb-4">
-          Nome do modelo:
+          {t("modelName")}:
           <input
             type="text"
-            placeholder="Nome"
+            placeholder={t("name")}
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="ml-2 p-1 border rounded "
@@ -91,11 +94,11 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({ name: initialName, fie
           />
         </h1>
 
-        <h2 className="text-2xl font-bold mb-4">Campos a serem extraídos</h2>
+        <h2 className="text-2xl font-bold mb-4">{t("fieldsToBeExtracted")}</h2>
 
         {fields.length === 0 && (
           <p>
-            Adicione campos que serão preenchidos ao utilizar este modelo para extrair os dados de seus arquivos.
+            {t("addFieldsToBeFilledOnDataExtraction")}
           </p>
         )}
 
@@ -114,11 +117,11 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({ name: initialName, fie
         <div className='flex justify-between'>
           <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded" onClick={addField} disabled={isLoading}>
             <FontAwesomeIcon icon={faPlus} className='mr-2' />
-            Adicionar Campo
+            {t("addField")}
           </button>
           <button className="mt-4 bg-green-600 text-white px-4 py-2 rounded" onClick={saveSchema} disabled={isLoading}>
             <FontAwesomeIcon icon={faFloppyDisk} className='mr-2' />
-            Salvar Modelo
+            {t("saveSchema")}
           </button>
         </div>
       </div>

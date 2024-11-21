@@ -4,6 +4,7 @@ import { utils, writeFile } from "xlsx";
 import { JSONObject } from "../types/JSONObject";
 import { JSONValue } from "../types/JSONValue";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface JSONTableProps {
   title?: string
@@ -11,6 +12,7 @@ interface JSONTableProps {
 }
 
 export const JSONTable: React.FC<JSONTableProps> = ({ title, data }) => {
+  const { t } = useTranslation()
   const hasData = () => !!data && data.length > 0
 
   // Step 1: Flatten each JSON object
@@ -72,7 +74,7 @@ export const JSONTable: React.FC<JSONTableProps> = ({ title, data }) => {
           </button>}
       </div>
 
-      {hasData() ? <Table /> : <div>Sem informações disponíveis</div>}
+      {hasData() ? <Table /> : <div>{t("noInfoAvailable")}</div>}
     </div>
   );
 };
@@ -83,6 +85,8 @@ interface JSONValueRendererProps {
 
 const JSONValueRenderer: React.FC<JSONValueRendererProps> = ({ value }) => {
   if (value === undefined || value === null) return <span>-</span>;
+
+  const { t } = useTranslation()
 
   if (Array.isArray(value))
     return (
@@ -102,7 +106,7 @@ const JSONValueRenderer: React.FC<JSONValueRendererProps> = ({ value }) => {
     case "string":
       return <span>{value}</span>;
     case "boolean":
-      return <span>{value ? 'True' : 'False'}</span>;
+      return <span>{value ? t("true") : t("false")}</span>;
     case "number":
       return <span>{value}</span>;
     default:

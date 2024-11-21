@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Field } from "../types/Field";
-import { FieldType, FieldTypeMap } from "../types/FieldType";
+import { FieldType } from "../types/FieldType";
 import { FieldProperties } from "./FieldProperties";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { createEmptyField } from "../utils/createEmptyField";
+import { useTranslation } from "react-i18next";
 
 interface FieldInputProps {
   field: Field;
@@ -14,15 +15,17 @@ interface FieldInputProps {
 }
 
 export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disableRemoveButton, onRemove, isLoading }) => {
+  const { t } = useTranslation()
+
   return (
     <>
       <div className="mb-3">
         <div className="flex flex-row">
           <h4 className="font-bold mb-2 flex-1">
-            Campo:
+            {t("field")}:
             <input
               type="text"
-              placeholder="Nome"
+              placeholder={t("name")}
               value={field.name}
               onChange={(e) => onChange({ ...field, name: e.target.value })}
               className="ml-2 p-1 border rounded"
@@ -42,7 +45,7 @@ export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disable
         </div>
         <div className="mb-3 last:mb-0 grid grid-cols-2 gap-4">
           <div className="flex flex-col">
-            <span className="mb-2 text-sm font-medium text-gray-900">Tipo</span>
+            <span className="mb-2 text-sm font-medium text-gray-900">{t("type")}</span>
             <select
               value={field.type}
               onChange={(e) => {
@@ -60,14 +63,14 @@ export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disable
             >
               {Object.values(FieldType).map((key) => (
                 <option key={key} value={key}>
-                  {FieldTypeMap.get(key)}
+                  {t(key)}
                 </option>
               ))}
             </select>
           </div>
 
           <div className="flex flex-col">
-            <span className="mb-2 text-sm font-medium text-gray-900">Obrigatório?</span>
+            <span className="mb-2 text-sm font-medium text-gray-900">{t("required")}?</span>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
@@ -81,9 +84,9 @@ export const FieldInput: React.FC<FieldInputProps> = ({ field, onChange, disable
           </div>
 
           <div className="flex flex-col">
-            <span className="mb-2 text-sm font-medium text-gray-900">Descrição</span>
+            <span className="mb-2 text-sm font-medium text-gray-900">{t("description")}</span>
             <textarea
-              placeholder="Descrição"
+              placeholder={t("description")}
               value={field.description}
               onChange={(e) => onChange({ ...field, description: e.target.value })}
               className="border p-1 rounded"
