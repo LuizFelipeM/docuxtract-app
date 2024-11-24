@@ -8,6 +8,7 @@ import { Callback } from './pages/Callback'
 import { PageLayout } from './pages/PageLayout'
 import { Toaster } from 'react-hot-toast'
 import { SchemaEdit } from './pages/SchemaEdit'
+import { Home } from './pages/Home'
 
 export function App() {
   return (
@@ -18,7 +19,8 @@ export function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/callback" element={<Callback />} />
 
-        <Route path="/" element={<AuthenticationGuard Component={PageLayout} />}>
+        <Route element={<AuthenticationGuard Component={PageLayout} />}>
+          <Route path="/" element={<Home />} />
 
           <Route path="schemas">
             <Route path="new" element={<Schema />} />

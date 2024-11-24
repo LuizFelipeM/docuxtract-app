@@ -4,6 +4,7 @@ export const pt: ResourceLanguage = {
   translation: {
     // #region Common
     extractData: "Extrair dados",
+    home: "Início",
     goHome: "Voltar ao início",
     loading: "Carregando",
     true: "Sim",
@@ -21,6 +22,19 @@ export const pt: ResourceLanguage = {
     name: "Nome",
     en: "Inglês",
     pt: "Português",
+    welcome: "Seja bem-vindo",
+    // #endregion
+
+    // #region Home
+    beforeStartSubtitle: "Antes de iniciar, vamos passar pelas etapas abaixo.",
+
+    step1Title: "O que deseja extrair?",
+    step1Description: "Comece criando um novo modelo definindo as informações que deseja extrair.",
+    step1Button: "Criar novo modelo",
+
+    step2Title: "Hora de extrair dados!",
+    step2Description: "Use o modelo criado para extrair dados dos seus documentos.",
+    step2Button: "Extrair dados",
     // #endregion
 
     // #region DataExtraction

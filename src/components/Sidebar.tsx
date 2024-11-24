@@ -1,4 +1,4 @@
-import { faFile, faList, faPlus, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faFile, faList, faPlus, faChevronDown, faHouse } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -36,6 +36,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       >
         <div className="p-4 font-bold text-lg">{t("manageSchemas")}</div>
         <ul className="mt-6 space-y-2">
+          <li>
+            <Link
+              to="/"
+              className="block px-4 py-2 transition-all hover:bg-gray-800"
+              onClick={toggleSidebar}
+            >
+              <FontAwesomeIcon icon={faHouse} className="mr-2" />
+              {t("home")}
+            </Link>
+          </li>
           <li>
             <Link
               to="/schemas/new"

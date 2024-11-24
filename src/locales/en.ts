@@ -4,6 +4,7 @@ export const en: ResourceLanguage = {
   translation: {
     // #region Common
     extractData: "Extract data",
+    home: "Home",
     goHome: "Go Home",
     loading: "Loading",
     true: "True",
@@ -21,6 +22,19 @@ export const en: ResourceLanguage = {
     name: "Name",
     en: "English",
     pt: "Portuguese",
+    welcome: "Welcome",
+    // #endregion
+
+    // #region Home
+    beforeStartSubtitle: "Before we start, let's go through the steps below.",
+
+    step1Title: "What do you want to extract?",
+    step1Description: "Start by creating a new model by defining the information you want to extract.",
+    step1Button: "Create a new schema",
+
+    step2Title: "Time to extract data!",
+    step2Description: "Use the created model to extract data from your documents.",
+    step2Button: "Extract data",
     // #endregion
 
     // #region DataExtraction
